@@ -16,16 +16,18 @@ class CreatePostWithComment
   def create_post_and_comment(value)
     #code
     post = Post.create(title: "#{@title}_#{value}", body: "#{@body}_#{value}")
-    comment = Comment.create(post.id, ["Comment 0 #{value}", "Comment 3 #{value}", "Comment 7 #{value}"].sample!)
+    comment = Comment.create(post_id: post.id, body: ["Comment 0 #{value}", "Comment 3 #{value}", "Comment 7 #{value}"].sample)
   end
 
   def number_of_times(x)
     x.times.each do
-      create_post_and_comment(x.to_s)
+      puts x
+      self.create_post_and_comment(x.to_s)
     end
   end
 
 end
 
-create_post_with_comment = CreatePostWithComment.new("title", "Body Of Post")
-create_post_with_comment.number_of_times(2)
+#
+# create_post_with_comment = CreatePostWithComment.new(title: "title", body: "Body Of Post")
+# create_post_with_comment.number_of_times(2)
