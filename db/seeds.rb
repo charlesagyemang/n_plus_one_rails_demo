@@ -41,4 +41,9 @@ end
 
 def eager_load
   posts = Post.all.includes!(:comments)
+
+  #use it 
+  posts.each do |post|
+    "#{post.title} :: #{post.body}  ::: #{post.comments.first.body}"
+  end
 end
