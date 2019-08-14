@@ -1,11 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
 class CreatePostWithComment
   def initialize(title:, body:)
     #code
@@ -15,19 +7,38 @@ class CreatePostWithComment
 
   def create_post_and_comment(value)
     #code
-    post = Post.create(title: "#{@title}_#{value}", body: "#{@body}_#{value}")
-    comment = Comment.create(post_id: post.id, body: ["Comment 0 #{value}", "Comment 3 #{value}", "Comment 7 #{value}"].sample)
+    post = Post.create(title: "#{@title}_#{value.to_s}", body: "#{@body}_#{value.to_s}")
+    comments = 3.times { create_comment(post, value) }
   end
 
   def number_of_times(x)
-    x.times.each do
-      puts x
-      self.create_post_and_comment(x.to_s)
+    x.times.each do |m|
+      puts m
+      self.create_post_and_comment(m)
     end
   end
 
+  private
+   def create_comment(post, value)
+     #code
+     comment = Comment.create(post_id: post.id, body: ["Comment 0 #{value.to_s}", "Comment 3 #{value.to_s}", "Comment 7 #{value.to_s}"].sample)
+   end
+
 end
 
+Comment.all.delete_all
+Post.all.delete_all
 #
-# create_post_with_comment = CreatePostWithComment.new(title: "title", body: "Body Of Post")
-# create_post_with_comment.number_of_times(2)
+create_post_with_comment = CreatePostWithComment.new(title: "title", body: "Body Of Post")
+create_post_with_comment.number_of_times(10000)
+
+def n_plus_1
+  Post.all.each do |post|
+    post.comments.each do |comment|
+    end
+  end
+end
+
+def eager_load
+  posts = Post.all.includes!(:comments)
+end
